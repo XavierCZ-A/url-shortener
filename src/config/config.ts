@@ -10,6 +10,7 @@ interface Config {
   BCRYPT_ROUNDS: number;
   CORS_ORIGIN: string;
   API_URL: string;
+  DOMAIN_NAME: string;
   DATABASE_USER: string;
   DATABASE_NAME: string;
   DATABASE_PASSWORD: string;
@@ -25,6 +26,7 @@ const config: Config = {
   BCRYPT_ROUNDS: parseInt(process.env.BCRYPT_ROUNDS || "10"),
   CORS_ORIGIN: process.env.CORS_ORIGIN || "http://localhost:3000",
   API_URL: process.env.API_URL || "http://localhost:3000/api",
+  DOMAIN_NAME: process.env.DOMAUN_NAME || "http://localhost:3000",
   DATABASE_USER: process.env.DATABASE_USER || "xavier",
   DATABASE_NAME: process.env.DATABASE_NAME || "url_short",
   DATABASE_PASSWORD: process.env.DATABASE_PASSWORD || "secretPassword",

@@ -8,7 +8,6 @@ export const errorHandler = (
   res: Response,
   next: NextFunction,
 ) => {
-  // Log básico del error
   console.error("Error:", error.message);
   console.error("Stack:", error.stack);
 
@@ -19,7 +18,6 @@ export const errorHandler = (
     statusCode = error.statusCode;
     response = error.responseData;
   } else {
-    // errores que no son CustomError
     statusCode = error.statusCode || 500;
     response =
       error.responseData ||

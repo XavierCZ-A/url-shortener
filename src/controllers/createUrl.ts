@@ -3,15 +3,15 @@ import { successData } from "../utils/response";
 import { db } from "../db";
 import { CustomError } from "../utils/customError";
 import { isURL } from "validator";
+import generateShortCode from "../utils/generteShortCode";
+import { config } from "../config/config";
 
 const createUrl = async (req: Request, res: Response, next: NextFunction) => {
-  const { originalUrl, shortCode } = req.body;
-  const user = req.get("user");
-
-  if (!user) {
-    throw new CustomError(404, "User id is missing");
-  }
-  const userId = parseInt(user, 10);
+  const { originalUrl } = req.body;
+  console.log("body: ", originalUrl);
+  const user = req.user;
+  const shortCode = generateShortCode();
+  console.log("shortCode: ", shortCode);
 
   try {
     const urlFormatValid = isURL(originalUrl, {
@@ -31,13 +31,21 @@ const createUrl = async (req: Request, res: Response, next: NextFunction) => {
       .values({
         original_url: originalUrl,
         short_code: shortCode,
-        user_id: userId,
+        user_id: user?.id,
       })
-      .returning(["id", "original_url"])
+      .returning(["original_url"])
       .executeTakeFirst();
 
-    return res.json(successData(url));
+    const shortUrl = `${config.DOMAIN_NAME}/${shortCode}`;
+
+    const response = {
+      url: url?.original_url,
+      shortUrl: shortUrl,
+    };
+
+    return res.json(successData(response));
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };

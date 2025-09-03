@@ -3,7 +3,7 @@ import { db } from "../db";
 import { successData } from "../utils/response";
 import { CustomError } from "../utils/customError";
 
-async function getUrls(req: Request, res: Response, next: NextFunction) {
+const getUrls = async (req: Request, res: Response, next: NextFunction) => {
   const user = req.get("user");
 
   if (!user) {
@@ -22,6 +22,6 @@ async function getUrls(req: Request, res: Response, next: NextFunction) {
   } catch (error) {
     next(error);
   }
-}
+};
 
 export default getUrls;
