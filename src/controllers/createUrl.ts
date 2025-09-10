@@ -8,10 +8,8 @@ import { config } from "../config/config";
 
 const createUrl = async (req: Request, res: Response, next: NextFunction) => {
   const { originalUrl } = req.body;
-  console.log("body: ", originalUrl);
   const user = req.user;
   const shortCode = generateShortCode();
-  console.log("shortCode: ", shortCode);
 
   try {
     const urlFormatValid = isURL(originalUrl, {

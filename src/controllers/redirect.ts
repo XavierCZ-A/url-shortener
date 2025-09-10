@@ -12,11 +12,11 @@ const redirect = async (req: Request, res: Response, next: NextFunction) => {
       .where("short_code", "=", shortCode)
       .executeTakeFirst();
 
-    console.log("shor url se inicio");
-
     if (!url) {
       throw new CustomError(404, "Url not found");
     }
+
+    console.log("Redireccionamiento completo");
 
     return res.redirect(301, url.original_url);
   } catch (error) {
