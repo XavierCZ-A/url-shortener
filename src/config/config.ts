@@ -26,7 +26,7 @@ const config: Config = {
   BCRYPT_ROUNDS: parseInt(process.env.BCRYPT_ROUNDS || "10"),
   CORS_ORIGIN: process.env.CORS_ORIGIN || "http://localhost:3000",
   API_URL: process.env.API_URL || "http://localhost:3000/api",
-  DOMAIN_NAME: process.env.DOMAUN_NAME || "https://1379368b56db.ngrok-free.app",
+  DOMAIN_NAME: process.env.DOMAUN_NAME || "https://e04d53f6bfe8.ngrok-free.app",
   DATABASE_USER: process.env.DATABASE_USER || "xavier",
   DATABASE_NAME: process.env.DATABASE_NAME || "url_short",
   DATABASE_PASSWORD: process.env.DATABASE_PASSWORD || "secretPassword",

@@ -16,9 +16,17 @@ const redirect = async (req: Request, res: Response, next: NextFunction) => {
       throw new CustomError(404, "Url not found");
     }
 
+    await db
+      .updateTable("urls")
+      .set((eb) => ({
+        clicks: eb("clicks", "+", 1),
+      }))
+      .where("short_code", "=", shortCode)
+      .execute();
+
     console.log("Redireccionamiento completo");
 
-    return res.redirect(301, url.original_url);
+    res.redirect(301, url.original_url);
   } catch (error) {
     next(error);
   }
