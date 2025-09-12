@@ -12,6 +12,7 @@ export interface UrlsTable {
   short_code: string;
   user_id: number | undefined;
   clicks?: number;
+  expires_at?: ColumnType<Date, string>;
   created_at: ColumnType<Date, string | undefined, never>;
   updated_at: ColumnType<Date, string | undefined, never>;
 }

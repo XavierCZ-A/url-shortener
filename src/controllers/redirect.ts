@@ -8,12 +8,21 @@ const redirect = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const url = await db
       .selectFrom("urls")
-      .select(["original_url"])
+      .select(["original_url", "expires_at"])
       .where("short_code", "=", shortCode)
       .executeTakeFirst();
 
     if (!url) {
-      throw new CustomError(404, "Url not found");
+      throw new CustomError(404, "Url no encontrada");
+    }
+
+    const currentTime = new Date();
+
+    if (url.expires_at) {
+      const expirationDate = new Date(url.expires_at);
+      if (currentTime > expirationDate) {
+        return res.status(410).send("Este enlace ha expirado.");
+      }
     }
 
     await db
@@ -26,7 +35,7 @@ const redirect = async (req: Request, res: Response, next: NextFunction) => {
 
     console.log("Redireccionamiento completo");
 
-    res.redirect(301, url.original_url);
+    return res.redirect(301, url.original_url);
   } catch (error) {
     next(error);
   }

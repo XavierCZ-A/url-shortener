@@ -7,12 +7,12 @@ import generateShortCode from "../utils/generteShortCode";
 import { config } from "../config/config";
 
 const createUrl = async (req: Request, res: Response, next: NextFunction) => {
-  const { originalUrl } = req.body;
+  const { urlData } = req.body;
   const user = req.user;
   const shortCode = generateShortCode();
 
   try {
-    const urlFormatValid = isURL(originalUrl, {
+    const urlFormatValid = isURL(urlData.originalUrl, {
       protocols: ["http", "https"],
       require_protocol: true,
       require_host: true,
@@ -27,9 +27,10 @@ const createUrl = async (req: Request, res: Response, next: NextFunction) => {
     const url = await db
       .insertInto("urls")
       .values({
-        original_url: originalUrl,
+        original_url: urlData.originalUrl,
         short_code: shortCode,
         user_id: user?.id,
+        expires_at: urlData?.expiresAt,
       })
       .returning(["original_url"])
       .executeTakeFirst();
@@ -39,6 +40,7 @@ const createUrl = async (req: Request, res: Response, next: NextFunction) => {
     const response = {
       url: url?.original_url,
       shortUrl: shortUrl,
+      expiresAt: urlData?.expiresAt,
     };
 
     return res.json(successData(response));
